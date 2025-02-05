@@ -35,8 +35,9 @@
 
             </div>
             <div class="col-6">
+                
                 <div>
-                    <div class="dropzone"
+                    <div class="dropzone mx-auto d-flex align-items-center justify-content-center text-center w-100"
                     appDrag
                     (files)="fileDropped($event)"
                     >
@@ -48,8 +49,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <input style="display: none;" type="file" multiple value="select" #selectFile (change)="onFileSelected($event)">
                 </div>
 
