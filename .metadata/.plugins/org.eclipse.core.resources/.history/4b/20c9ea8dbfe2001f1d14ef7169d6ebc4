@@ -1,0 +1,5 @@
+package com.NeoMart.ecommerce.dao;
+
+public interface ProductDao {
+
+}

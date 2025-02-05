@@ -1,0 +1,13 @@
+package com.NeoMart.ecommerce.entity;
+
+import javax.persistence.Entity;
+
+@Entity
+public class Product {
+
+	private Integer productId;
+	private String productName;
+	private String productDiscription;
+	private Double productDiscountedPrice;
+	private Double productActualPrice;
+}

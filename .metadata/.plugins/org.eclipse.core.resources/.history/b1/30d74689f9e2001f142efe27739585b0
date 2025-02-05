@@ -1,0 +1,5 @@
+package com.NeoMart.ecommerce.entity;
+
+public class ImageModel {
+
+}

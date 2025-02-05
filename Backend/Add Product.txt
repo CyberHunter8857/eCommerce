@@ -1,0 +1,6 @@
+{
+  "productName":"iPhone 16",
+  "productDiscription": "apple's iPhone",
+  "productDiscountedPrice": 69000,
+  "productActualPrice": 112000
+}
