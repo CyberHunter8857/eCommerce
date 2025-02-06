@@ -1,44 +1,73 @@
-import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../_services/product.service';
-import { Product } from '../_model/product.model';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from "@angular/core";
+import { ProductService } from "../_services/product.service";
+import { Product } from "../_model/product.model";
+import { HttpErrorResponse } from "@angular/common/http";
+import { MatDialog } from "@angular/material/dialog";
+import { ShowProductImagesDialogComponent } from "../show-product-images-dialog/show-product-images-dialog.component";
+import { ImageProcessingService } from "../image-processing.service";
+import { map } from "rxjs/operators";
 
 @Component({
-  selector: 'app-show-product-details',
-  templateUrl: './show-product-details.component.html',
-  styleUrls: ['./show-product-details.component.css']
+  selector: "app-show-product-details",
+  templateUrl: "./show-product-details.component.html",
+  styleUrls: ["./show-product-details.component.css"],
 })
 export class ShowProductDetailsComponent implements OnInit {
-
   productDetails: Product[] = [];
-  displayedColumns: string[] = [ 'Id','Product Image', 'Product Name', 'Product Discription', 'Product Discounted Price', 'Product Actual Price','Edit', 'Delete'];
+  displayedColumns: string[] = [
+    "Id",
+    "Product Name",
+    "Product Discription",
+    "Product Discounted Price",
+    "Product Actual Price",
+    "Images",
+    "Edit",
+    "Delete",
+  ];
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, public imagesDialog:MatDialog, 
+    private imageProccingService : ImageProcessingService
+  ) {}
 
   ngOnInit(): void {
     this.getAllProducts();
   }
 
-  public getAllProducts(){
-    this.productService.getAllProducts().subscribe(
-      (resp: Product[]) =>{
+  public getAllProducts() {
+    this.productService.getAllProducts()
+    .pipe(
+      map((x: Product[],i) => x.map((product: Product)=> this.imageProccingService.createImages(product)))
+    )
+    .subscribe(
+      (resp: Product[]) => {
         console.log(resp);
         this.productDetails = resp;
-      }, (error: HttpErrorResponse) =>{
+      },
+      (error: HttpErrorResponse) => {
         console.log(error);
       }
     );
   }
-  
-  deleteProduct(productId){
-   this.productService.deleteProduct(productId).subscribe(
-    (resp) =>{
-      this.getAllProducts();
-    }, (error: HttpErrorResponse) =>{
-      console.log(error);
-    }
 
-   );
+  deleteProduct(productId) {
+    this.productService.deleteProduct(productId).subscribe(
+      (resp) => {
+        this.getAllProducts();
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    );
   }
 
+  showImages(product: Product) {
+    console.log(product);
+    this.imagesDialog.open(ShowProductImagesDialogComponent, {
+      data:{
+        images : product.productImages
+      },
+      height:'500px',
+      width:'800px'
+    });
+  }
 }
