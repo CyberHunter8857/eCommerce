@@ -63,8 +63,8 @@ public class ProductController {
 	}
 	
 	@GetMapping({"/getProductDetailsById/{productId}"})
-	public Product getProductDetailsById(@PathVariable("productId") Integer productId) {
-		return productService.getProductDetailsById(productId);
+	public Product getProductDetailsById(Integer productId) {
+		
 	}
 	
 	@DeleteMapping({"/deteleProductDetails/{productId}"})
